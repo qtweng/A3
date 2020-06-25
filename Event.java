@@ -12,7 +12,7 @@ public class Event implements Comparable<Event> {
      *
      * @param action string indicating production action
      * @param startT start time of event
-     * @param duration duration of even
+     * @param duration duration of event
      */
     public Event(String action, double startT, double duration) {
         this.action = action;

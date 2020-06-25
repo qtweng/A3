@@ -16,12 +16,9 @@ public class Factory {
     private Storage<Item> Q01 = null;
     private Storage<Item> Q12 = null;
     private Storage<Item> Q23 = null;
-    private double S0aBlock;
-    private double S0aBlockedT;
-    private double S0bBlock;
-    private double S0bBlockedT;
-    private double S1Starve;
-    private double S1StarvedT;
+    private CreateStage<Item> S0a = null;
+    private CreateStage<Item> S0b = null;
+    private FinishStage<Item> S1 = null;
 
     /**
      * Constructor
@@ -37,24 +34,9 @@ public class Factory {
         Q01 = new Storage(qMax);
         Q12 = new Storage(qMax);
         Q23 = new Storage(qMax);
-    }
-
-    /**
-     * Runs the Factory production
-     */
-    public void run() {
-        // set end time
-        eventPriorityQueue.add(new Event("end", 10000000, 0));
-        eventPriorityQueue.add(new Event("start", 0, 0));
-        // while loop so program runs continuously as long as time doesn't exceed 10,000,000
-        do {
-            schedule("S0a");
-            schedule("S0b");
-            schedule("S1");
-            eventPriorityQueue.poll();
-            eventPriorityQueue.poll();
-
-        } while (eventPriorityQueue.peek().getTime() < 10000000);
+        S0a = new CreateStage("S0a", Q01);
+        S0b = new CreateStage("S0b", Q01);
+        S1 = new FinishStage("S1", Q01);
     }
 
     // retrieve random value
@@ -66,70 +48,48 @@ public class Factory {
     }
 
     /**
+     * Runs the Factory production
+     */
+    public void run() {
+        // set end time
+        eventPriorityQueue.add(new Event("end", 10000000, 0));
+        eventPriorityQueue.add(new Event("start", 0, 0));
+        // while loop so program runs continuously as long as time doesn't exceed 10,000,000
+        do {
+            schedule(S0a.getName());
+            schedule(S0b.getName());
+//            schedule(S1.getName());
+            for (int i = 0; i < 2; i++) {
+                process(eventPriorityQueue.poll());
+            }
+
+        } while (eventPriorityQueue.peek().getTime() < 10000000);
+    }
+
+    /**
      * @param action schedules action into eventPriorityQueue
      */
     private void schedule(String action) {
         if (action == "S0a") {
-            eventPriorityQueue.add(new Event("S0a", 0, getR(2)));
+            eventPriorityQueue.add(new Event("S0a", eventPriorityQueue.peek().getTime(), getR(2)));
         } else if (action == "S0b") {
-            eventPriorityQueue.add(new Event("S0b", 0, getR(1)));
-        } else if (action == "S1") {
-            if (Q01.status() != -1) {
-                eventPriorityQueue.add(new Event("S1", Q01.peek().getLatest().getTime(), getR(1)));
-            } else {
-                S1Starve = eventPriorityQueue.peek().getTime();
-            }
+            eventPriorityQueue.add(new Event("S0b", eventPriorityQueue.peek().getTime(), getR(1)));
+//        } else if (action == "S1") {
+//            eventPriorityQueue.add(new Event("S1", Q01.peek().getLatest().getTime(), getR(1)));
         }
-
     }
 
     /**
      * @param event takes event actions
-     * @return boolean of whether event is successful
      */
-    private boolean process(Event event) {
-        checkStatus();
+    private void process(Event event) {
         if (event.getAction() == "S0a") {
-            if (Q01.status() != 1) {
-                Item item = new Item("S0a");
-                item.recordLine(event);
-                Q01.add(item);
-                return true;
-            } else {
-                S0aBlock = event.getTime();
-                return false;
-            }
+            S0a.makeItem(new Item("S0a"));
+            S0a.process(event);
         } else if (event.getAction() == "S0b") {
-            if (Q01.status() != 1) {
-                Item item = new Item("S0b");
-                item.recordLine(event);
-                Q01.add(item);
-                return true;
-            } else {
-                S0bBlock = event.getTime();
-                return false;
-            }
+            S0a.makeItem(new Item("S0b"));
+            S0a.process(event);
         } else if (event.getAction() == "S1") {
-            if (Q01.status() != -1) {
-                Q01.take();
-                return true;
-            } else {
-                S1Starve = event.getTime();
-                return false;
-            }
         }
-        return false;
-    }
-
-    private void checkStatus() {
-        if (Q01.status() != 1) {
-            S0aBlockedT += eventPriorityQueue.peek().getTime() - S0aBlock;
-        }
-        if (Q12.status() != -1) {
-            S1StarvedT += eventPriorityQueue.peek().getTime() - S1Starve;
-        }
-    }
-
-    private void proceed() {
     }
 }
