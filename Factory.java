@@ -59,9 +59,9 @@ public class Factory {
         // while loop so program runs continuously as long as time doesn't exceed 10,000,000
         do {
             schedule(S0a.getName());
-            schedule(S0b.getName());
+            //schedule(S0b.getName());
             schedule(S1.getName());
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 3; i++) {
                 process(eventPriorityQueue.poll());
             }
 
@@ -77,7 +77,8 @@ public class Factory {
         } else if (action == "S0b") {
             eventPriorityQueue.add(new Event("S0b", eventPriorityQueue.peek().getTime(), getR(1)));
         } else if (action == "S1") {
-            eventPriorityQueue.add(new Event("S1", Q01.peek().getLatest().getTime(), getR(1)));
+            eventPriorityQueue.add(S1.ask(eventPriorityQueue.peek().getTime()));
+            eventPriorityQueue.add(new Event("S1", eventPriorityQueue.peek().getTime(), getR(1)));
         }
     }
 
@@ -92,6 +93,7 @@ public class Factory {
             S0b.makeItem(new Item("S0b"));
             S0b.process(event);
         } else if (event.getAction() == "S1") {
+            S1.process(event);
         }
     }
 

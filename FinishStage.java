@@ -22,14 +22,20 @@ public class FinishStage<T extends Item>extends Stage {
 
     @Override
     public void process(Event event) {
+        if (item != null) {
+            move(event);
+        }
+    }
+    public Event ask(double time){
         if (item == null) {
             if (prev.status() == -1 && !starve){
-                starve(event.getTime());
-            } else {
-                unstarve(event.getTime());
-                receive(event);
+                starve(time);
+            } else if (prev.status() != -1) {
+                unstarve(time);
+                receive(time);
             }
         }
+        return new Event(name, time, 0);
     }
     public void starve(double time){
         if(!starve) {
@@ -42,14 +48,15 @@ public class FinishStage<T extends Item>extends Stage {
         if (starve) {
             this.starve = false;
             starvedT += time - startStarve;
-            receive(new Event("Starve", time - startStarve));
         }
     }
 
-    public void receive(Event event) {
+    public void receive(double time) {
         item = prev.take();
-        prev.calcAvgTime(event.getTime() - item.getLatest().getTime()); // calculate running average for storage
+        prev.status();
+        prev.calcAvgTime(time - item.getLatest().getTime()); // calculate running average for storage
     }
+
     public void move(Event event){
         item.recordLine(event);
         warehouse.add(item);

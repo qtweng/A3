@@ -68,6 +68,7 @@ public class Storage<T> {
      * @return int status of the storage: -1 empty, 0 available, 1 max
      */
     public int status() {
+
         return status;
     }
 
