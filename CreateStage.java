@@ -35,12 +35,11 @@ public class CreateStage<T extends Item> extends Stage {
     }
 
     public void unblock(double time) {
-        if (block == true) {
+        if (block) {
             this.block = false;
             blockedT += time - startBlock;
             move(new Event("Block", time - startBlock));
         }
-
     }
 
     public void makeItem(T item){

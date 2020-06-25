@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Random;
 
@@ -10,6 +11,7 @@ import java.util.Random;
 public class Factory {
     private static final Random r = new Random(100);
     private static PriorityQueue<Event> eventPriorityQueue = new PriorityQueue<>();
+    private static LinkedList<Item> completed = new LinkedList();
     private static int m;
     private static int n;
     private static int qMax;
@@ -36,7 +38,7 @@ public class Factory {
         Q23 = new Storage(qMax);
         S0a = new CreateStage("S0a", Q01);
         S0b = new CreateStage("S0b", Q01);
-        S1 = new FinishStage("S1", Q01);
+        S1 = new FinishStage("S1", Q01, completed);
     }
 
     // retrieve random value
@@ -58,7 +60,7 @@ public class Factory {
         do {
             schedule(S0a.getName());
             schedule(S0b.getName());
-//            schedule(S1.getName());
+            schedule(S1.getName());
             for (int i = 0; i < 2; i++) {
                 process(eventPriorityQueue.poll());
             }
@@ -74,8 +76,8 @@ public class Factory {
             eventPriorityQueue.add(new Event("S0a", eventPriorityQueue.peek().getTime(), getR(2)));
         } else if (action == "S0b") {
             eventPriorityQueue.add(new Event("S0b", eventPriorityQueue.peek().getTime(), getR(1)));
-//        } else if (action == "S1") {
-//            eventPriorityQueue.add(new Event("S1", Q01.peek().getLatest().getTime(), getR(1)));
+        } else if (action == "S1") {
+            eventPriorityQueue.add(new Event("S1", Q01.peek().getLatest().getTime(), getR(1)));
         }
     }
 
@@ -91,5 +93,11 @@ public class Factory {
             S0b.process(event);
         } else if (event.getAction() == "S1") {
         }
+    }
+
+    @Override
+    public String toString() {
+        String str = "";
+        return str;
     }
 }

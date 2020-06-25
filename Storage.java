@@ -10,6 +10,11 @@ public class Storage<T> {
     private final int qMax;
     ArrayDeque<T> queue = new ArrayDeque();
     private volatile int status = -1; // -1 empty queue, 0 available, 1 max queue
+    double averageTime = 0;
+    double averageItems = 0;
+    double timeN = 1;
+    double itemN = 1;
+
     public Storage(int qMax) {
         this.qMax = qMax;
     }
@@ -64,5 +69,14 @@ public class Storage<T> {
      */
     public int status() {
         return status;
+    }
+
+    /**
+     * calculates running average time on each item spent in storage
+     * @param time new time
+     */
+    public void calcAvgTime(double time){
+        averageTime = averageTime + (time - averageTime)/timeN;
+        timeN++;
     }
 }
