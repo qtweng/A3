@@ -87,8 +87,8 @@ public class Factory {
             S0a.makeItem(new Item("S0a"));
             S0a.process(event);
         } else if (event.getAction() == "S0b") {
-            S0a.makeItem(new Item("S0b"));
-            S0a.process(event);
+            S0b.makeItem(new Item("S0b"));
+            S0b.process(event);
         } else if (event.getAction() == "S1") {
         }
     }

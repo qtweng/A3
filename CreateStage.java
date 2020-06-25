@@ -28,8 +28,10 @@ public class CreateStage<T extends Item> extends Stage {
         }
     }
     public void block(double time) {
-        block = true;
-        startBlock = time;
+        if(!block) {
+            block = true;
+            startBlock = time;
+        }
     }
 
     public void unblock(double time) {
