@@ -50,13 +50,9 @@ public class Factory {
         do {
             schedule("S0a");
             schedule("S0b");
-            if (process(eventPriorityQueue.peek())) {
-                eventPriorityQueue.poll();
-            }
-            if (process(eventPriorityQueue.peek())) {
-                eventPriorityQueue.poll();
-            }
             schedule("S1");
+            eventPriorityQueue.poll();
+            eventPriorityQueue.poll();
 
         } while (eventPriorityQueue.peek().getTime() < 10000000);
     }
@@ -77,8 +73,12 @@ public class Factory {
             eventPriorityQueue.add(new Event("S0a", 0, getR(2)));
         } else if (action == "S0b") {
             eventPriorityQueue.add(new Event("S0b", 0, getR(1)));
-        } else if (action == "S1" && Q01.status() != -1) {
-            eventPriorityQueue.add(new Event("S1", Q01.peek().getLatest().getTime(), 1));
+        } else if (action == "S1") {
+            if (Q01.status() != -1) {
+                eventPriorityQueue.add(new Event("S1", Q01.peek().getLatest().getTime(), getR(1)));
+            } else {
+                S1Starve = eventPriorityQueue.peek().getTime();
+            }
         }
 
     }
