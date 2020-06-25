@@ -1,6 +1,3 @@
-import java.util.PriorityQueue;
-import java.util.Random;
-
 /**
  * Main class for assignment, deals with user interaction and command line
  * arguments

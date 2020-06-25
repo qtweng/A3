@@ -10,8 +10,8 @@ public class Event implements Comparable<Event> {
     /**
      * Constructor for new event
      *
-     * @param action string indicating production action
-     * @param startT start time of event
+     * @param action   string indicating production action
+     * @param startT   start time of event
      * @param duration duration of event
      */
     public Event(String action, double startT, double duration) {
@@ -47,6 +47,7 @@ public class Event implements Comparable<Event> {
     public void defer(double time) {
         this.time = time;
     }
+
     /**
      * @param o the object to be compared.
      * @return a negative integer, zero, or a positive integer as this object

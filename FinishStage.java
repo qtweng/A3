@@ -1,13 +1,13 @@
 import java.util.LinkedList;
 
-public class FinishStage<T extends Item>extends Stage {
+public class FinishStage<T extends Item> extends Stage {
     private final String name;
+    private final Storage<T> prev;
+    private final LinkedList<T> warehouse;
     private boolean starve = true;
     private double startStarve;
     private double starvedT;
     private T item;
-    private Storage<T> prev;
-    private LinkedList<T> warehouse;
 
     public FinishStage(String name, Storage prev, LinkedList warehouse) {
         this.name = name;
@@ -26,9 +26,10 @@ public class FinishStage<T extends Item>extends Stage {
             move(event);
         }
     }
-    public Event ask(double time){
+
+    public Event ask(double time) {
         if (item == null) {
-            if (prev.status() == -1 && !starve){
+            if (prev.status() == -1 && !starve) {
                 starve(time);
             } else if (prev.status() != -1) {
                 unstarve(time);
@@ -37,8 +38,9 @@ public class FinishStage<T extends Item>extends Stage {
         }
         return new Event(name, time, 0);
     }
-    public void starve(double time){
-        if(!starve) {
+
+    public void starve(double time) {
+        if (!starve) {
             starve = true;
             startStarve = time;
         }
@@ -57,7 +59,7 @@ public class FinishStage<T extends Item>extends Stage {
         prev.calcAvgTime(time - item.getLatest().getTime()); // calculate running average for storage
     }
 
-    public void move(Event event){
+    public void move(Event event) {
         item.recordLine(event);
         warehouse.add(item);
         item = null;

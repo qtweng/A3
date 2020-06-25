@@ -10,8 +10,8 @@ import java.util.Random;
 
 public class Factory {
     private static final Random r = new Random(100);
-    private static PriorityQueue<Event> eventPriorityQueue = new PriorityQueue<>();
-    private static LinkedList<Item> completed = new LinkedList();
+    private static final PriorityQueue<Event> eventPriorityQueue = new PriorityQueue<>();
+    private static final LinkedList<Item> completed = new LinkedList();
     private static int m;
     private static int n;
     private static int qMax;

@@ -1,11 +1,11 @@
 public class CreateStage<T extends Item> extends Stage {
-    private String name;
+    private final String name;
+    private final double starvedT = 0;
+    private final Storage<T> next;
     private boolean block;
     private double startBlock;
     private double blockedT = 0;
-    private double starvedT = 0;
     private T item = null;
-    private Storage<T> next;
 
     public CreateStage(String name, Storage next) {
         this.name = name;
@@ -21,14 +21,15 @@ public class CreateStage<T extends Item> extends Stage {
     public void process(Event event) {
         if (next.status() == 1) {
             block(event.getTime());
-        } else if (block == true && next.status() != 1){
+        } else if (block == true && next.status() != 1) {
             unblock(event.getTime());
         } else {
             move(event);
         }
     }
+
     public void block(double time) {
-        if(!block) {
+        if (!block) {
             block = true;
             startBlock = time;
         }
@@ -42,13 +43,13 @@ public class CreateStage<T extends Item> extends Stage {
         }
     }
 
-    public void makeItem(T item){
-        if (this.item == null){
+    public void makeItem(T item) {
+        if (this.item == null) {
             this.item = item;
         }
     }
 
-    public void move(Event event){
+    public void move(Event event) {
         item.recordLine(event);
         next.add(item);
         item = null;
