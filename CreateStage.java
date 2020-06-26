@@ -19,12 +19,14 @@ public class CreateStage<T extends Item> extends Stage {
 
     @Override
     public void process(Event event) {
-        if (next.status() == 1) {
-            block(event.getTime());
-        } else if (block == true && next.status() != 1) {
-            unblock(event.getTime());
-        } else {
-            move(event);
+        if (item != null) {
+            if (next.status() == 1) {
+                block(event.getTime());
+            } else if (block) {
+                unblock(event.getTime());
+            } else {
+                move(event);
+            }
         }
     }
 

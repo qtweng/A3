@@ -20,7 +20,8 @@ public class Factory {
     private Storage<Item> Q23 = null;
     private CreateStage<Item> S0a = null;
     private CreateStage<Item> S0b = null;
-    private FinishStage<Item> S1 = null;
+    private InterStage<Item> S1 = null;
+    private FinishStage<Item> S2 = null;
 
     /**
      * Constructor
@@ -38,7 +39,8 @@ public class Factory {
         Q23 = new Storage(qMax);
         S0a = new CreateStage("S0a", Q01);
         S0b = new CreateStage("S0b", Q01);
-        S1 = new FinishStage("S1", Q01, completed);
+        S1 = new InterStage("S1", Q01, Q12);
+        S2 = new FinishStage("S2", Q12, completed);
     }
 
     // retrieve random value
@@ -59,9 +61,10 @@ public class Factory {
         // while loop so program runs continuously as long as time doesn't exceed 10,000,000
         do {
             schedule(S0a.getName());
-            //schedule(S0b.getName());
+            schedule(S0b.getName());
             schedule(S1.getName());
-            for (int i = 0; i < 3; i++) {
+            schedule(S2.getName());
+            for (int i = 0; i < 6; i++) {
                 process(eventPriorityQueue.poll());
             }
 
@@ -79,6 +82,9 @@ public class Factory {
         } else if (action == "S1") {
             eventPriorityQueue.add(S1.ask(eventPriorityQueue.peek().getTime()));
             eventPriorityQueue.add(new Event("S1", eventPriorityQueue.peek().getTime(), getR(1)));
+        } else if (action == "S2") {
+            eventPriorityQueue.add(S2.ask(eventPriorityQueue.peek().getTime()));
+            eventPriorityQueue.add(new Event("S1", eventPriorityQueue.peek().getTime(), getR(1)));
         }
     }
 
@@ -94,6 +100,8 @@ public class Factory {
             S0b.process(event);
         } else if (event.getAction() == "S1") {
             S1.process(event);
+        } else if (event.getAction() == "S2") {
+            S2.process(event);
         }
     }
 

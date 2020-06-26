@@ -29,9 +29,9 @@ public class FinishStage<T extends Item> extends Stage {
 
     public Event ask(double time) {
         if (item == null) {
-            if (prev.status() == -1 && !starve) {
+            if (prev.status() == -1) {
                 starve(time);
-            } else if (prev.status() != -1) {
+            } else {
                 unstarve(time);
                 receive(time);
             }

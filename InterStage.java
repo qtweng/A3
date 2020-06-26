@@ -23,20 +23,22 @@ public class InterStage<T extends Item> extends Stage {
 
     @Override
     public void process(Event event) {
-        if (next.status() == 1) {
-            block(event.getTime());
-        } else if (block == true && next.status() != 1) {
-            unblock(event.getTime());
-        } else {
-            move(event);
+        if (item != null) {
+            if (next.status() == 1) {
+                block(event.getTime());
+            } else if (block) {
+                unblock(event.getTime());
+            } else {
+                move(event);
+            }
         }
     }
 
     public Event ask(double time) {
         if (item == null) {
-            if (prev.status() == -1 && !starve) {
+            if (prev.status() == -1) {
                 starve(time);
-            } else if (prev.status() != -1) {
+            } else {
                 unstarve(time);
                 receive(time);
             }
