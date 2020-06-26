@@ -1,15 +1,16 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class FinishStage<T extends Item> extends Stage {
     private final String name;
     private final Storage<T> prev;
-    private final LinkedList<T> warehouse;
+    private final ArrayList<T> warehouse;
+    private final double blockedT = 0;
     private boolean starve = true;
     private double startStarve;
-    private double starvedT;
+    private double starvedT = 0;
     private T item;
 
-    public FinishStage(String name, Storage prev, LinkedList warehouse) {
+    public FinishStage(String name, Storage prev, ArrayList warehouse) {
         this.name = name;
         this.prev = prev;
         this.warehouse = warehouse;
@@ -54,6 +55,7 @@ public class FinishStage<T extends Item> extends Stage {
     }
 
     public void receive(double time) {
+        prev.calcAvgItem(time);
         item = prev.take();
         prev.status();
         prev.calcAvgTime(time - item.getLatest().getTime()); // calculate running average for storage
@@ -65,4 +67,11 @@ public class FinishStage<T extends Item> extends Stage {
         item = null;
     }
 
+    public double getBlockedT() {
+        return blockedT;
+    }
+
+    public double getStarvedT() {
+        return starvedT;
+    }
 }

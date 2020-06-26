@@ -17,6 +17,7 @@ public class PA3 {
             int qMax = Integer.parseInt(args[2]);
             Factory factory = new Factory(m, n, qMax);
             factory.run();
+            factory.printInfo();
         } else {
             System.out.println("Incorrect number of parameters.");
         }

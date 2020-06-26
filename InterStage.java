@@ -57,7 +57,7 @@ public class InterStage<T extends Item> extends Stage {
         if (block == true) {
             this.block = false;
             blockedT += time - startBlock;
-            move(new Event("Block", time - startBlock));
+            move(new Event(name, time - startBlock));
         }
 
     }
@@ -77,15 +77,25 @@ public class InterStage<T extends Item> extends Stage {
     }
 
     public void receive(double time) {
+        prev.calcAvgItem(time);
         item = prev.take();
         prev.status();
         prev.calcAvgTime(time - item.getLatest().getTime()); // calculate running average for storage
     }
 
     public void move(Event event) {
+        next.calcAvgItem(event.getTime());
         item.recordLine(event);
         next.add(item);
         item = null;
+    }
+
+    public double getBlockedT() {
+        return blockedT;
+    }
+
+    public double getStarvedT() {
+        return starvedT;
     }
 
 }

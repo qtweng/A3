@@ -41,7 +41,7 @@ public class CreateStage<T extends Item> extends Stage {
         if (block) {
             this.block = false;
             blockedT += time - startBlock;
-            move(new Event("Block", time - startBlock));
+            move(new Event(name, time - startBlock));
         }
     }
 
@@ -52,9 +52,17 @@ public class CreateStage<T extends Item> extends Stage {
     }
 
     public void move(Event event) {
+        next.calcAvgItem(event.getTime());
         item.recordLine(event);
         next.add(item);
         item = null;
     }
 
+    public double getBlockedT() {
+        return blockedT;
+    }
+
+    public double getStarvedT() {
+        return starvedT;
+    }
 }
