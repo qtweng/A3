@@ -9,9 +9,9 @@ import java.util.ArrayDeque;
 public class Storage<T> {
     private final int qMax;
     ArrayDeque<T> queue = new ArrayDeque();
-    private double averageTime = 0;
+    private double avgTime = 0;
     private double weightedTotalItems = 0;
-    private double timeN = 1;
+    private int timeN = 1;
     private double itemTimer = 0;
     private volatile int status = -1; // -1 empty queue, 0 available, 1 max queue
 
@@ -40,13 +40,6 @@ public class Storage<T> {
     }
 
     /**
-     * @return T item at front of queue
-     */
-    public T peek() {
-        return queue.peek();
-    }
-
-    /**
      * @return T item at front of queue and removes from queue
      */
     public T take() {
@@ -67,7 +60,7 @@ public class Storage<T> {
     /**
      * @return int status of the storage: -1 empty, 0 available, 1 max
      */
-    public int status() {
+    public int getStatus() {
 
         return status;
     }
@@ -78,7 +71,7 @@ public class Storage<T> {
      * @param time new time
      */
     public void calcAvgTime(double time) {
-        averageTime = averageTime + (time - averageTime) / timeN;
+        avgTime = avgTime + (time - avgTime) / timeN;
         timeN++;
     }
     public void calcAvgItem(double time) {
@@ -86,11 +79,11 @@ public class Storage<T> {
        itemTimer = time;
     }
 
-    public double getAverageTime() {
-        return averageTime;
+    public double getAvgTime() {
+        return avgTime;
     }
 
-    public double getAverageItems() {
+    public double getAvgItems() {
         return (weightedTotalItems / 10000000);
     }
 }

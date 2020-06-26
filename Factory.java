@@ -75,6 +75,16 @@ public class Factory {
         eventPriorityQueue.add(new Event("end", 10000000, 0));
         eventPriorityQueue.add(new Event("start", 0, 0));
         // while loop so program runs continuously as long as time doesn't exceed 10,000,000
+        schedule(s0a.getName());
+        schedule(s0b.getName());
+        schedule(s1.getName());
+        schedule(s2.getName());
+        schedule(s3a.getName());
+        schedule(s3b.getName());
+        schedule(s4.getName());
+        schedule(s5a.getName());
+        schedule(s5b.getName());
+        schedule(s6.getName());
         do {
             schedule(s0a.getName());
             schedule(s0b.getName());
@@ -158,7 +168,7 @@ public class Factory {
     }
 
     public void printInfo() {
-        System.out.println(completed.size());
+        System.out.println("Total completed: " + completed.size());
         System.out.println("Production Stations:" );
         System.out.println("---------------------------------------" );
         String[][] production = new String[11][];
@@ -180,12 +190,12 @@ public class Factory {
         System.out.println("---------------------------------------" );
         String[][] storage = new String[7][];
         storage[0] = new String[] { "Store:", "AvgTime[t]", "AvgItems"};
-        storage[1] = new String[] { "Q01" , String.format( "%.2f", q01.getAverageTime()), String.format( "%.2f", q01.getAverageItems())};
-        storage[2] = new String[] { "Q12" , String.format( "%.2f", q12.getAverageTime()), String.format( "%.2f", q01.getAverageItems())};
-        storage[3] = new String[] { "Q23" , String.format( "%.2f", q23.getAverageTime()), String.format( "%.2f", q01.getAverageItems())};
-        storage[4] = new String[] { "Q34" , String.format( "%.2f", q34.getAverageTime()), String.format( "%.2f", q01.getAverageItems())};
-        storage[5] = new String[] { "Q45" , String.format( "%.2f", q45.getAverageTime()), String.format( "%.2f", q01.getAverageItems())};
-        storage[6] = new String[] { "Q56" , String.format( "%.2f", q56.getAverageTime()), String.format( "%.2f", q01.getAverageItems())};
+        storage[1] = new String[] { "Q01" , String.format( "%.2f", q01.getAvgTime()), String.format( "%.2f", q01.getAvgItems())};
+        storage[2] = new String[] { "Q12" , String.format( "%.2f", q12.getAvgTime()), String.format( "%.2f", q12.getAvgItems())};
+        storage[3] = new String[] { "Q23" , String.format( "%.2f", q23.getAvgTime()), String.format( "%.2f", q23.getAvgItems())};
+        storage[4] = new String[] { "Q34" , String.format( "%.2f", q34.getAvgTime()), String.format( "%.2f", q34.getAvgItems())};
+        storage[5] = new String[] { "Q45" , String.format( "%.2f", q45.getAvgTime()), String.format( "%.2f", q45.getAvgItems())};
+        storage[6] = new String[] { "Q56" , String.format( "%.2f", q56.getAvgTime()), String.format( "%.2f", q56.getAvgItems())};
         for (Object[] row : storage) {
             System.out.format("%-15s%-15s%-15s\n", row);
         }

@@ -30,7 +30,7 @@ public class FinishStage<T extends Item> extends Stage {
 
     public Event ask(double time) {
         if (item == null) {
-            if (prev.status() == -1) {
+            if (prev.getStatus() == -1) {
                 starve(time);
             } else {
                 unstarve(time);
@@ -57,7 +57,7 @@ public class FinishStage<T extends Item> extends Stage {
     public void receive(double time) {
         prev.calcAvgItem(time);
         item = prev.take();
-        prev.status();
+        prev.getStatus();
         prev.calcAvgTime(time - item.getLatest().getTime()); // calculate running average for storage
     }
 

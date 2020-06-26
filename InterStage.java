@@ -24,7 +24,7 @@ public class InterStage<T extends Item> extends Stage {
     @Override
     public void process(Event event) {
         if (item != null) {
-            if (next.status() == 1) {
+            if (next.getStatus() == 1) {
                 block(event.getTime());
             } else if (block) {
                 unblock(event.getTime());
@@ -36,7 +36,7 @@ public class InterStage<T extends Item> extends Stage {
 
     public Event ask(double time) {
         if (item == null) {
-            if (prev.status() == -1) {
+            if (prev.getStatus() == -1) {
                 starve(time);
             } else {
                 unstarve(time);
@@ -79,7 +79,7 @@ public class InterStage<T extends Item> extends Stage {
     public void receive(double time) {
         prev.calcAvgItem(time);
         item = prev.take();
-        prev.status();
+        prev.getStatus();
         prev.calcAvgTime(time - item.getLatest().getTime()); // calculate running average for storage
     }
 

@@ -43,11 +43,7 @@ public class Event implements Comparable<Event> {
     public double getTime() {
         return time;
     }
-
-    public void defer(double time) {
-        this.time = time;
-    }
-
+    
     /**
      * @param o the object to be compared.
      * @return a negative integer, zero, or a positive integer as this object
